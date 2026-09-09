@@ -1,5 +1,6 @@
 /**
  * MarTech Panthers - Festive Offer Interactivity
+ * Focus: High-conversion B2B Strategy Meetings & Custom Enquiries
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
       mobileToggle.setAttribute('aria-expanded', isOpen);
     });
 
-    // Close mobile menu on clicking any link
     document.querySelectorAll('.mobile-link, .mobile-cta').forEach(link => {
       link.addEventListener('click', () => {
         mobileDrawer.classList.remove('open');
@@ -22,64 +22,58 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 2. Interactive Savings Calculator
-  const budgetSlider = document.getElementById('customBudgetSlider');
-  const calcBudgetText = document.getElementById('calcBudgetText');
-  const calcPayText = document.getElementById('calcPayText');
-  const calcSaveBadge = document.getElementById('calcSaveBadge');
-  const tierCards = document.querySelectorAll('.price-tier-card');
+  // 2. Fast-Track Consultation Goal Chips
+  const goalChips = document.querySelectorAll('.goal-chip');
+  const scopeSelect = document.getElementById('userScopeInterest');
+  const plannerQuickCta = document.getElementById('plannerQuickCta');
 
-  const formatRupee = (num) => {
-    return '₹' + num.toLocaleString('en-IN');
-  };
-
-  const updateCalculator = (budget) => {
-    // Offer terms: Up to 50% off, capped at ₹45,000
-    const rawDiscount = budget * 0.5;
-    const actualDiscount = Math.min(rawDiscount, 45000);
-    const finalPay = budget - actualDiscount;
-    const discountPercent = Math.round((actualDiscount / budget) * 100);
-
-    if (calcBudgetText) calcBudgetText.textContent = formatRupee(budget);
-    if (calcPayText) calcPayText.textContent = formatRupee(finalPay);
-    if (calcSaveBadge) {
-      if (actualDiscount >= 45000 && budget > 90000) {
-        calcSaveBadge.textContent = `You save ${formatRupee(actualDiscount)} (Capped at ₹45,000)`;
-      } else {
-        calcSaveBadge.textContent = `You save ${formatRupee(actualDiscount)} (${discountPercent}% off)`;
+  goalChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      goalChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const goal = chip.getAttribute('data-goal');
+      
+      // Auto-populate form dropdown
+      if (scopeSelect) {
+        if (goal.includes('Lead Leakage')) {
+          scopeSelect.value = 'Growth & Multi-Channel Automation';
+        } else if (goal.includes('CRM Setup')) {
+          scopeSelect.value = 'CRM & Lead Flow Foundation';
+        } else if (goal.includes('Integration')) {
+          scopeSelect.value = 'Full Stack MarTech & Systems Sync';
+        } else {
+          scopeSelect.value = 'Growth & Multi-Channel Automation';
+        }
       }
-    }
 
-    // Highlight matching tier card if budget matches
-    tierCards.forEach(card => {
-      const cardBudget = parseInt(card.getAttribute('data-budget'), 10);
-      if (cardBudget === budget) {
-        card.classList.add('active-tier');
-      } else {
-        card.classList.remove('active-tier');
+      if (plannerQuickCta) {
+        plannerQuickCta.querySelector('span').textContent = `Discuss "${chip.textContent.replace(/^[^a-zA-Z0-9]+/, '').trim()}" on Call`;
       }
-    });
-  };
-
-  if (budgetSlider) {
-    budgetSlider.addEventListener('input', (e) => {
-      const val = parseInt(e.target.value, 10);
-      updateCalculator(val);
-    });
-  }
-
-  // Click on any pricing card to reflect on calculator
-  tierCards.forEach(card => {
-    card.addEventListener('click', () => {
-      const budget = parseInt(card.getAttribute('data-budget'), 10);
-      if (budgetSlider) {
-        budgetSlider.value = budget;
-      }
-      updateCalculator(budget);
     });
   });
 
-  // 3. Modals & Form Handling
+  // 3. Solution Scope Card CTAs - Link to form with pre-selected scope
+  const scopeCtas = document.querySelectorAll('[data-scope-select]');
+  scopeCtas.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const selectedScope = btn.getAttribute('data-scope-select');
+      if (scopeSelect && selectedScope) {
+        scopeSelect.value = selectedScope;
+        
+        // Highlight form momentarily
+        const formWrapper = document.querySelector('.emerald-form-wrapper');
+        if (formWrapper) {
+          formWrapper.style.transition = 'box-shadow 0.3s ease';
+          formWrapper.style.boxShadow = '0 0 0 4px #BE4928';
+          setTimeout(() => {
+            formWrapper.style.boxShadow = '';
+          }, 1500);
+        }
+      }
+    });
+  });
+
+  // 4. Modals & Lead Booking Handling
   const successModal = document.getElementById('successModal');
   const closeModalBtn = document.getElementById('closeModalBtn');
   const expertModal = document.getElementById('expertModal');
@@ -88,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const leadForm = document.getElementById('leadForm');
   const expertForm = document.getElementById('expertForm');
   const modalMessage = document.getElementById('modalMessage');
+  const modalSummaryBox = document.getElementById('modalSummaryBox');
 
   if (heroTalkBtn && expertModal) {
     heroTalkBtn.addEventListener('click', () => {
@@ -131,9 +126,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const name = document.getElementById('userName').value.trim();
       const email = document.getElementById('userEmail').value.trim();
       const company = document.getElementById('userCompany').value.trim();
+      const scope = scopeSelect ? scopeSelect.value : 'Sales Enablement & Automation';
 
       if (modalMessage) {
-        modalMessage.innerHTML = `Thank you, <strong>${name}</strong> from <strong>${company}</strong>! Your Ganesh Chaturthi Special offer has been applied. We have sent the confirmation &amp; next steps to <strong>${email}</strong>.`;
+        modalMessage.innerHTML = `Thank you, <strong>${name}</strong> from <strong>${company}</strong>! Your strategy session request for <em>"${scope}"</em> has been received.`;
+      }
+
+      if (modalSummaryBox) {
+        modalSummaryBox.innerHTML = `<strong>Festive Benefit Reserved:</strong> Up to ₹45,000 credit locked for ${company}. We have dispatched meeting agenda &amp; calendar invite to <strong>${email}</strong>.`;
       }
 
       leadForm.reset();
@@ -151,6 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (modalMessage) {
         modalMessage.innerHTML = `Your discovery session has been scheduled. Our senior sales enablement architect will reach out shortly!`;
       }
+      if (modalSummaryBox) {
+        modalSummaryBox.innerHTML = `<strong>Festive Benefit Reserved:</strong> Up to ₹45,000 credit locked for your team. Check your inbox for confirmation.`;
+      }
       if (successModal) {
         successModal.showModal();
         triggerFestiveConfetti();
@@ -159,10 +162,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Subtle festive celebratory confetti effect
+  // Festive Confetti Animation
   function triggerFestiveConfetti() {
     const colors = ['#BE4928', '#E5C158', '#C5933A', '#132B22', '#F8E2C2'];
-    for (let i = 0; i < 35; i++) {
+    for (let i = 0; i < 40; i++) {
       const confetto = document.createElement('div');
       confetto.className = 'festive-confetto';
       confetto.style.position = 'fixed';
@@ -174,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
       confetto.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
       confetto.style.zIndex = '9999';
       confetto.style.pointerEvents = 'none';
-      confetto.style.opacity = '0.9';
+      confetto.style.opacity = '0.95';
       confetto.style.transform = `rotate(${Math.random() * 360}deg)`;
       
       document.body.appendChild(confetto);
@@ -182,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const animDuration = Math.random() * 2000 + 2000;
       const anim = confetto.animate([
         { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
-        { transform: `translate(${(Math.random() - 0.5) * 160}px, 105vh) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+        { transform: `translate(${(Math.random() - 0.5) * 180}px, 105vh) rotate(${Math.random() * 720}deg)`, opacity: 0 }
       ], {
         duration: animDuration,
         easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
