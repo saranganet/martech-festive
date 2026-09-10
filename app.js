@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const formWrapper = document.querySelector('.emerald-form-wrapper');
         if (formWrapper) {
           formWrapper.style.transition = 'box-shadow 0.3s ease';
-          formWrapper.style.boxShadow = '0 0 0 4px #BE4928';
+          formWrapper.style.boxShadow = '0 0 0 4px #22C55E';
           setTimeout(() => {
             formWrapper.style.boxShadow = '';
           }, 1500);
@@ -77,18 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const successModal = document.getElementById('successModal');
   const closeModalBtn = document.getElementById('closeModalBtn');
   const expertModal = document.getElementById('expertModal');
-  const heroTalkBtn = document.getElementById('heroTalkBtn');
   const closeExpertX = document.getElementById('closeExpertX');
   const leadForm = document.getElementById('leadForm');
   const expertForm = document.getElementById('expertForm');
   const modalMessage = document.getElementById('modalMessage');
   const modalSummaryBox = document.getElementById('modalSummaryBox');
-
-  if (heroTalkBtn && expertModal) {
-    heroTalkBtn.addEventListener('click', () => {
-      expertModal.showModal();
-    });
-  }
 
   if (closeExpertX && expertModal) {
     closeExpertX.addEventListener('click', () => {
@@ -164,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Festive Confetti Animation
   function triggerFestiveConfetti() {
-    const colors = ['#BE4928', '#E5C158', '#C5933A', '#132B22', '#F8E2C2'];
+    const colors = ['#16A34A', '#22C55E', '#060C3B', '#E5C158', '#C5933A', '#EAFFEE'];
     for (let i = 0; i < 40; i++) {
       const confetto = document.createElement('div');
       confetto.className = 'festive-confetto';
