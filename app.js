@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (modalSummaryBox) {
-        modalSummaryBox.innerHTML = `<strong>Festive Benefit Reserved:</strong> Up to ₹45,000 credit locked for ${company}. We have dispatched meeting agenda &amp; calendar invite to <strong>${email}</strong>.`;
+        modalSummaryBox.innerHTML = `<strong>Festive Benefit Reserved:</strong> Priority strategy slot &amp; implementation grant reserved for ${company}. Meeting invite sent to <strong>${email}</strong>.`;
       }
 
       leadForm.reset();
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modalMessage.innerHTML = `Your discovery session has been scheduled. Our senior sales enablement architect will reach out shortly!`;
       }
       if (modalSummaryBox) {
-        modalSummaryBox.innerHTML = `<strong>Festive Benefit Reserved:</strong> Up to ₹45,000 credit locked for your team. Check your inbox for confirmation.`;
+        modalSummaryBox.innerHTML = `<strong>Festive Benefit Reserved:</strong> Priority strategy slot &amp; implementation grant reserved for your team. Check your inbox for details.`;
       }
       if (successModal) {
         successModal.showModal();
